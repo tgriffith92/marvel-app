@@ -14,7 +14,7 @@ class Character(models.Model):
 class Suggestion(models.Model):
     title            = models.CharField(max_length=50)
     future_release   = models.DateField()
-    related_movie    = models.CharField(max_lenth=50)
+    related_movie    = models.CharField(max_length=50)
     plot             = models.TextField()
 
 class Movie(models.Model):
