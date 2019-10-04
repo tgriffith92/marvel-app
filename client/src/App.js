@@ -5,7 +5,7 @@ class NewCharacterForm extends React.Component {
 
   state = {
     name: '',
-    affiliation: '',
+    affiliation: 'Hero',
     reason: ''
   }
 
@@ -15,6 +15,10 @@ class NewCharacterForm extends React.Component {
     newCharacter[evnt.target.name] = evnt.target.value
 
     this.setState(newCharacter)
+  }
+
+  handleSelect = (evnt) => {
+    this.setState({affiliation: evnt.target.value})
   }
 
   handleSubmit = (evnt) => {
@@ -29,9 +33,9 @@ class NewCharacterForm extends React.Component {
       <label htmlFor='name'>Character Name:</label><br />
       <input type='text' name='name' onChange={this.handleInput} placeholder='Namor'/><br />
       <label htmlFor='affiliation'>Affiliation:</label><br />
-      <select>
-        <option value=''>Hero</option>
-        <option value=''>Villain</option>
+      <select value={this.state.affiliation} onChange={this.handleSelect}>
+        <option value='Hero'>Hero</option>
+        <option value='Villain'>Villain</option>
       </select><br />
       <label htmlFor='reason'>Reason:</label><br />
       <textarea rows='4' cols='50' name='reason' onChange={this.handleInput}>Enter text here...</textarea><br />
