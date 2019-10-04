@@ -1,9 +1,5 @@
 from django.db import models
 
-class Movie(models.Model):
-    title = models.CharField(max_length=50)
-    year  = models.DateField()
-
 class Comic(models.Model):
     title  = models.CharField(max_length=50)
     rating = models.PositiveSmallIntegerField()
@@ -14,3 +10,13 @@ class Character(models.Model):
     ability     = models.PositiveSmallIntegerField()
     affiliation = models.CharField(max_length=10)
     reason      = models.TextField()
+
+class Suggestion(models.Model):
+    title          = models.CharField(max_length=50)
+    release_date   = models.DateField()
+    related_movie  = models.CharField(max_lenth=50)
+    plot           = models.TextField()
+
+class Movie(models.Model):
+    title = models.CharField(max_length=50)
+    year  = models.DateField()
