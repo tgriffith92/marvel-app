@@ -6,9 +6,15 @@ class Comic(models.Model):
     review = models.TextField()
 
 class Character(models.Model):
+
+    Affiliation_In_Choices = [
+        (True, 'Hero'),
+        (False, 'Villain')
+    ]
+
     name        = models.CharField(max_length=30)
-    ability     = models.PositiveSmallIntegerField()
-    affiliation = models.CharField(max_length=10)
+    affiliation = models.CharField(max_length=7, choices=Affiliation_In_Choices,
+    default=True)
     reason      = models.TextField()
 
 class Suggestion(models.Model):

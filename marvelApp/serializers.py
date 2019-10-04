@@ -26,7 +26,6 @@ class CharacterSerializer(serializers.ModelSerializer):
         fields = [
             'id', 
             'name', 
-            'ability',
             'affiliation',
             'reason'
             ]
