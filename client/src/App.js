@@ -1,6 +1,29 @@
 import React from 'react';
 import './App.css';
 
+class NewSuggestionForm extends React.Component {
+  state = {
+    title: '',
+    futureRelease: Date,
+    relatedMovie: '',
+    plot: ''
+  }
+
+  render = () => (
+    <form>
+      <label htmlFor='title'>Title:</label><br />
+      <input type='text' name='title' onChange={this.handleInput} placeholder='Dark Reign'/><br />
+      <label htmlFor='futureRelease'>Future Release:</label><br />
+      <input type='date' name='futureRelease' onChange={this.handleInput}/><br />
+      <label htmlFor='relatedMovie'>Tie-in Movie:</label><br />
+      <input type='text' name='relatedMovie' onChange={this.handleInput} placeholder='Black Panther 2'/><br />
+      <label htmlFor='plot'>Plot:</label><br />
+      <textarea rows='4' cols='50' name='plot' onChange={this.handleInput}>Enter text here...</textarea><br />
+      <input type='submit' value='Add Movie'/>
+    </form>
+  )
+}
+
 class NewComicForm extends React.Component {
   state = {
     title: '',
@@ -16,17 +39,15 @@ class NewComicForm extends React.Component {
     this.setState(newComic)
   }
 
-  
-
   render = () => (
     <form>
       <label htmlFor='title'>Title:</label><br />
       <input type='text' name='title' onChange={this.handleInput} placeholder='Civil War'/><br />
       <label htmlFor='rating'>Rating(1-5):</label><br />
-      <input type='number' name='rating' min='1' max='5' onChange={this.handleInput}/>
+      <input type='number' name='rating' min='1' max='5' onChange={this.handleInput}/><br />
       <label htmlFor='reason'>Reason:</label><br />
       <textarea rows='4' cols='50' name='reason' onChange={this.handleInput}>Enter text here...</textarea><br />
-      <input type='submit' value='New Character'/>
+      <input type='submit' value='Add Comic'/>
     </form>
   )
 }
@@ -77,7 +98,7 @@ class NewCharacterForm extends React.Component {
       </select><br />
       <label htmlFor='reason'>Reason:</label><br />
       <textarea rows='4' cols='50' name='reason' onChange={this.handleInput}>Enter text here...</textarea><br />
-      <input type='submit' value='New Character'/>
+      <input type='submit' value='Add Character'/>
     </form>
   )
 }
@@ -87,6 +108,7 @@ class App extends React.Component {
     <div>
       <NewCharacterForm />
       <NewComicForm />
+      <NewSuggestionForm />
     </div>
   )
 }
