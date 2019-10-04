@@ -12,10 +12,10 @@ class Character(models.Model):
     reason      = models.TextField()
 
 class Suggestion(models.Model):
-    title          = models.CharField(max_length=50)
-    release_date   = models.DateField()
-    related_movie  = models.CharField(max_lenth=50)
-    plot           = models.TextField()
+    title            = models.CharField(max_length=50)
+    future_release   = models.DateField()
+    related_movie    = models.CharField(max_lenth=50)
+    plot             = models.TextField()
 
 class Movie(models.Model):
     title = models.CharField(max_length=50)
