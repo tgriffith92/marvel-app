@@ -1,6 +1,24 @@
 import React from 'react';
 import './App.css';
 
+const testMovies = {
+  1: 
+  {
+    id: 1,
+    title: 'Iron Man'
+  }
+}
+
+const moviePreview = (movie) => (
+  <option value={movie.id}>{movie.title}</option>
+)
+
+const movieList = (movies, currentMovie, onChange) => (
+  <select value={currentMovie} onChange={(evnt) => onChange(evnt.target.value)}>
+    {movies.map(moviePreview)}
+  </select>
+)
+
 class NewSuggestionForm extends React.Component {
   state = {
     title: '',
