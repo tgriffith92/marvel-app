@@ -37,6 +37,13 @@ const comicList = (comics) => (
   </ul>
 )
 
+const singleComicList = (comic) => (
+  <div>
+    {comic.category}
+    {comicList(comic.comics)}
+  </div>
+)
+
 const characterPreview = (character) => (
   <li>
     {character.id} - {character.title}
@@ -158,24 +165,32 @@ const testMovies =
     id: 1,
     category: 'Iron Man',
     releaseDate: Date,
-    
-    characters:
+    comics:
       [
-        { name: 'Namor', id: 1 },
-        { name: 'Silver Surfer', id: 2 }
+        {title: 'Civil War', id: 1},
+        {title: 'Dark Reign', id: 2}
       ]
+    // characters:
+    //   [
+    //     { name: 'Namor', id: 1 },
+    //     { name: 'Silver Surfer', id: 2 }
+    //   ]
   },
   2:
   {
     id: 2,
     category: 'Thor',
     releaseDate: Date,
-    
-    characters:
+    comics:
       [
-        { name: 'Namor', id: 1 },
-        { name: 'Silver Surfer', id: 2 }
+        {title: 'The Mighty Thor', id: 1},
+        {title: 'Thor Ragnorak', id: 2}
       ]
+    // characters:
+    //   [
+    //     { name: 'Namor', id: 1 },
+    //     { name: 'Silver Surfer', id: 2 }
+    //   ]
   }
 }
 
@@ -202,7 +217,7 @@ class App extends React.Component {
       <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
       {/* <NewComicForm />
       <NewSuggestionForm /> */}
-      {/* {comicList(this.getAllMovies())} */}
+      {singleComicList(this.getMovieCategory())}
       {/* {newMovieForm(testMovies)} */}
     </div>
   )
