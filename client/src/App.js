@@ -1,30 +1,6 @@
 import React from 'react';
 import './App.css';
 
-const testMovies = [
-  {
-    id: 1,
-    category: 'Iron Man',
-    movies:
-      [
-        { title: 'Iron Man', id: 1 },
-        { title: 'Iron Man 2', id: 2 }
-      ],
-    comics:
-      [
-        { title: 'Civil War', id: 1 },
-        { title: 'Dark Reign', id: 2 }
-      ],
-    characters:
-      [
-        { name: 'Namor', id: 1 },
-        { name: 'Silver Surfer', id: 2 }
-      ]
-  }
-]
-
-
-
 const moviePreview = (movie) => (
   <li>
     {movie.id} - {movie.title}
@@ -160,7 +136,7 @@ class NewCharacterForm extends React.Component {
   // }
 
   render = () => (
-    <form>
+    <form onSubmit={this.handleSubmit}>
       <label htmlFor='name'>Character Name:</label><br />
       <input type='text' name='name' onChange={this.handleInput} placeholder='Namor' /><br />
       <label htmlFor='affiliation'>Affiliation:</label><br />
@@ -175,24 +151,52 @@ class NewCharacterForm extends React.Component {
   )
 }
 
+const testMovies = [
+  {
+    id: 1,
+    category: 'Iron Man',
+    releaseDate: Date,
+    movies:
+      [
+        { title: 'Iron Man', id: 1 },
+        { title: 'Iron Man 2', id: 2 }
+      ],
+    comics:
+      [
+        { title: 'Civil War', id: 1 },
+        { title: 'Dark Reign', id: 2 }
+      ],
+    characters:
+      [
+        { name: 'Namor', id: 1 },
+        { name: 'Silver Surfer', id: 2 }
+      ]
+  }
+]
+
 class App extends React.Component {
 
-  // state = {
-  //   currentMovie: 1,
-  //   movies: testMovies
-  // }
+  state = {
+    currentMovie: 1,
+    movies: testMovies
+  }
 
-  // getAllMovies = () =>
-  //   Object.values(this.state.movies)
+  getAllMovies = () =>
+    Object.values(this.state.movies)
+
+  addNewCharCurrentCategory = (title) => {
+    console.log('addNewCharCurrentCategory: ', title)
+  }
 
   render = () => (
     <div>
-      {/* <NewCharacterForm />
-      <NewComicForm />
+      {categoryList(testMovies)}
+      <NewCharacterForm addNewChar={this.addNewCharCurrentCategory}/>
+      {/* <NewComicForm />
       <NewSuggestionForm /> */}
       {/* {movieList(testMovies)} */}
-      {categoryList(testMovies)}
       {/* {comicList(testMovies)} */}
+      {/* {newMovieForm(testMovies)} */}
     </div>
   )
 }
