@@ -7,8 +7,18 @@ const testMovies = {
     [
       { title: 'Iron Man', id: 1 },
       { title: 'Iron Man 2', id: 2 }
-    ]
-}
+    ],
+  comics:
+    [
+      {title: 'Civil War', id: 1},
+      {title: 'Dark Reign', id: 2}
+    ],
+  characters:
+    [
+      {name: 'Namor', id: 1},
+      {name: 'Silver Surfer', id: 2}
+    ]    
+  }
 
 const moviePreview = (movie) => (
   <li>
@@ -27,6 +37,30 @@ const categoryList = (movie) => (
     {movie.category}
     {movieList(movie.movies)}
   </div>
+)
+
+const comicPreview = (comic) => (
+  <li>
+    {comic.id} - {comic.title}
+  </li>
+)
+
+const comicList = (comics) => (
+  <ul>
+    {comics.map(comicPreview)}
+  </ul>
+)
+
+const characterPreview = (character) => (
+  <li>
+    {character.id} - {character.title}
+  </li>
+)
+
+const characterList = (characters) => (
+  <ul>
+    {characters.map(characterPreview)}
+  </ul>
 )
 
 class NewSuggestionForm extends React.Component {
@@ -148,6 +182,7 @@ class App extends React.Component {
       <NewSuggestionForm /> */}
       {/* {movieList(testMovies)} */}
       {categoryList(testMovies)}
+      {/* {comicList(testMovies)} */}
     </div>
   )
 }
