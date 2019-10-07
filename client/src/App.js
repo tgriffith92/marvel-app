@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
 
-const testMovies = [
-  {title: 'Iron Man', id: 1},
-  {title: 'Iron Man 2', id: 2}
-]
+const testMovies = {
+  category: 'Iron Man',
+  movies:
+    [
+      { title: 'Iron Man', id: 1 },
+      { title: 'Iron Man 2', id: 2 }
+    ]
+}
 
 const moviePreview = (movie) => (
   <li>
@@ -18,6 +22,13 @@ const movieList = (movies, currentMovie, onChange) => (
   </ul>
 )
 
+const categoryList = (movie) => (
+  <div>
+    {movie.category}
+    {movieList(movie.movies)}
+  </div>
+)
+
 class NewSuggestionForm extends React.Component {
   state = {
     title: '',
@@ -29,14 +40,14 @@ class NewSuggestionForm extends React.Component {
   render = () => (
     <form>
       <label htmlFor='title'>Title:</label><br />
-      <input type='text' name='title' onChange={this.handleInput} placeholder='Dark Reign'/><br />
+      <input type='text' name='title' onChange={this.handleInput} placeholder='Dark Reign' /><br />
       <label htmlFor='futureRelease'>Future Release:</label><br />
-      <input type='date' name='futureRelease' onChange={this.handleInput}/><br />
+      <input type='date' name='futureRelease' onChange={this.handleInput} /><br />
       <label htmlFor='relatedMovie'>Tie-in Movie:</label><br />
-      <input type='text' name='relatedMovie' onChange={this.handleInput} placeholder='Black Panther 2'/><br />
+      <input type='text' name='relatedMovie' onChange={this.handleInput} placeholder='Black Panther 2' /><br />
       <label htmlFor='plot'>Plot:</label><br />
       <textarea rows='4' cols='50' name='plot' onChange={this.handleInput}>Enter text here...</textarea><br />
-      <input type='submit' value='Add Movie'/>
+      <input type='submit' value='Add Movie' />
     </form>
   )
 }
@@ -49,7 +60,7 @@ class NewComicForm extends React.Component {
   }
 
   handleInput = (evnt) => {
-    let newComic = {...this.state}
+    let newComic = { ...this.state }
 
     newComic[evnt.target.name] = evnt.target.value
 
@@ -59,12 +70,12 @@ class NewComicForm extends React.Component {
   render = () => (
     <form>
       <label htmlFor='title'>Title:</label><br />
-      <input type='text' name='title' onChange={this.handleInput} placeholder='Civil War'/><br />
+      <input type='text' name='title' onChange={this.handleInput} placeholder='Civil War' /><br />
       <label htmlFor='rating'>Rating(1-5):</label><br />
-      <input type='number' name='rating' min='1' max='5' onChange={this.handleInput}/><br />
+      <input type='number' name='rating' min='1' max='5' onChange={this.handleInput} /><br />
       <label htmlFor='reason'>Reason:</label><br />
       <textarea rows='4' cols='50' name='reason' onChange={this.handleInput}>Enter text here...</textarea><br />
-      <input type='submit' value='Add Comic'/>
+      <input type='submit' value='Add Comic' />
     </form>
   )
 }
@@ -78,7 +89,7 @@ class NewCharacterForm extends React.Component {
   }
 
   handleInput = (evnt) => {
-    let newCharacter = {...this.state}
+    let newCharacter = { ...this.state }
 
     newCharacter[evnt.target.name] = evnt.target.value
 
@@ -86,14 +97,14 @@ class NewCharacterForm extends React.Component {
   }
 
   handleSelect = (evnt) => {
-    this.setState({affiliation: evnt.target.value})
+    this.setState({ affiliation: evnt.target.value })
   }
 
   handleSubmit = (evnt) => {
     evnt.preventDefault();
 
     this.props.addNewChar(this.state)
-    this.setState({name: '', affiliation: '', reason: ''})
+    this.setState({ name: '', affiliation: '', reason: '' })
   }
 
   // addNewChar = (newCharInfo) => {
@@ -107,7 +118,7 @@ class NewCharacterForm extends React.Component {
   render = () => (
     <form>
       <label htmlFor='name'>Character Name:</label><br />
-      <input type='text' name='name' onChange={this.handleInput} placeholder='Namor'/><br />
+      <input type='text' name='name' onChange={this.handleInput} placeholder='Namor' /><br />
       <label htmlFor='affiliation'>Affiliation:</label><br />
       <select value={this.state.affiliation} onChange={this.handleSelect}>
         <option value='Hero'>Hero</option>
@@ -115,7 +126,7 @@ class NewCharacterForm extends React.Component {
       </select><br />
       <label htmlFor='reason'>Reason:</label><br />
       <textarea rows='4' cols='50' name='reason' onChange={this.handleInput}>Enter text here...</textarea><br />
-      <input type='submit' value='Add Character'/>
+      <input type='submit' value='Add Character' />
     </form>
   )
 }
@@ -135,7 +146,8 @@ class App extends React.Component {
       {/* <NewCharacterForm />
       <NewComicForm />
       <NewSuggestionForm /> */}
-      {movieList(testMovies)}
+      {/* {movieList(testMovies)} */}
+      {categoryList(testMovies)}
     </div>
   )
 }
