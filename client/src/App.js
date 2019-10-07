@@ -7,7 +7,7 @@ const moviePreview = (movie) => (
   </li>
 )
 
-const movieList = (movies, currentMovie, onChange) => (
+const movieList = (movies) => (
   <ul>
     {movies.map(moviePreview)}
   </ul>
@@ -19,9 +19,9 @@ const categoryPreview = (movie) => (
   </option>
 )
 
-const categoryList = (movies) => (
+const categoryList = (characters) => (
   <select>
-    {movies.map(categoryPreview)}
+    {characters.map(categoryPreview)}
   </select>
 )
 
@@ -151,28 +151,33 @@ class NewCharacterForm extends React.Component {
   )
 }
 
-const testMovies = [
+const testMovies =
+{
+  1:
   {
     id: 1,
     category: 'Iron Man',
     releaseDate: Date,
-    movies:
+    
+    characters:
       [
-        { title: 'Iron Man', id: 1 },
-        { title: 'Iron Man 2', id: 2 }
-      ],
-    comics:
-      [
-        { title: 'Civil War', id: 1 },
-        { title: 'Dark Reign', id: 2 }
-      ],
+        { name: 'Namor', id: 1 },
+        { name: 'Silver Surfer', id: 2 }
+      ]
+  },
+  2:
+  {
+    id: 2,
+    category: 'Thor',
+    releaseDate: Date,
+    
     characters:
       [
         { name: 'Namor', id: 1 },
         { name: 'Silver Surfer', id: 2 }
       ]
   }
-]
+}
 
 class App extends React.Component {
 
@@ -184,18 +189,20 @@ class App extends React.Component {
   getAllMovies = () =>
     Object.values(this.state.movies)
 
+  getMovieCategory = () =>
+    this.state.movies[this.state.currentMovie]  
+
   addNewCharCurrentCategory = (title) => {
     console.log('addNewCharCurrentCategory: ', title)
   }
 
   render = () => (
     <div>
-      {categoryList(testMovies)}
-      <NewCharacterForm addNewChar={this.addNewCharCurrentCategory}/>
+      {categoryList(this.getAllMovies())}
+      <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
       {/* <NewComicForm />
       <NewSuggestionForm /> */}
-      {/* {movieList(testMovies)} */}
-      {/* {comicList(testMovies)} */}
+      {/* {comicList(this.getAllMovies())} */}
       {/* {newMovieForm(testMovies)} */}
     </div>
   )
