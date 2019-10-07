@@ -1,24 +1,29 @@
 import React from 'react';
 import './App.css';
 
-const testMovies = {
-  category: 'Iron Man',
-  movies:
-    [
-      { title: 'Iron Man', id: 1 },
-      { title: 'Iron Man 2', id: 2 }
-    ],
-  comics:
-    [
-      {title: 'Civil War', id: 1},
-      {title: 'Dark Reign', id: 2}
-    ],
-  characters:
-    [
-      {name: 'Namor', id: 1},
-      {name: 'Silver Surfer', id: 2}
-    ]    
+const testMovies = [
+  {
+    id: 1,
+    category: 'Iron Man',
+    movies:
+      [
+        { title: 'Iron Man', id: 1 },
+        { title: 'Iron Man 2', id: 2 }
+      ],
+    comics:
+      [
+        { title: 'Civil War', id: 1 },
+        { title: 'Dark Reign', id: 2 }
+      ],
+    characters:
+      [
+        { name: 'Namor', id: 1 },
+        { name: 'Silver Surfer', id: 2 }
+      ]
   }
+]
+
+
 
 const moviePreview = (movie) => (
   <li>
@@ -32,11 +37,16 @@ const movieList = (movies, currentMovie, onChange) => (
   </ul>
 )
 
-const categoryList = (movie) => (
-  <div>
+const categoryPreview = (movie) => (
+  <option value={movie.id}>
     {movie.category}
-    {movieList(movie.movies)}
-  </div>
+  </option>
+)
+
+const categoryList = (movies) => (
+  <select>
+    {movies.map(categoryPreview)}
+  </select>
 )
 
 const comicPreview = (comic) => (
