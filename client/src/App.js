@@ -46,7 +46,7 @@ const singleComicList = (comic) => (
 
 const characterPreview = (character) => (
   <li>
-    {character.id} - {character.title}
+    {character.id} - {character.name}
   </li>
 )
 
@@ -54,6 +54,13 @@ const characterList = (characters) => (
   <ul>
     {characters.map(characterPreview)}
   </ul>
+)
+
+const singleCharacterList = (character) => (
+  <div>
+    {character.category}
+    {characterList(character.characters)}
+  </div>
 )
 
 class NewSuggestionForm extends React.Component {
@@ -73,7 +80,7 @@ class NewSuggestionForm extends React.Component {
       <label htmlFor='relatedMovie'>Tie-in Movie:</label><br />
       <input type='text' name='relatedMovie' onChange={this.handleInput} placeholder='Black Panther 2' /><br />
       <label htmlFor='plot'>Plot:</label><br />
-      <textarea rows='4' cols='50' name='plot' onChange={this.handleInput}>Enter text here...</textarea><br />
+      <textarea rows='4' cols='50' name='plot' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
       <input type='submit' value='Add Movie' />
     </form>
   )
@@ -94,14 +101,21 @@ class NewComicForm extends React.Component {
     this.setState(newComic)
   }
 
+  handleSubmit = (evnt) => {
+    evnt.preventDefault();
+
+    this.props.addNewComic(this.state.title)
+    this.setState({ title: '', rating: '', review: '' })
+  }
+
   render = () => (
-    <form>
+    <form onSubmit={this.handleSubmit}>
       <label htmlFor='title'>Title:</label><br />
       <input type='text' name='title' onChange={this.handleInput} placeholder='Civil War' /><br />
       <label htmlFor='rating'>Rating(1-5):</label><br />
       <input type='number' name='rating' min='1' max='5' onChange={this.handleInput} /><br />
       <label htmlFor='reason'>Reason:</label><br />
-      <textarea rows='4' cols='50' name='reason' onChange={this.handleInput}>Enter text here...</textarea><br />
+      <textarea rows='4' cols='50' name='reason' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
       <input type='submit' value='Add Comic' />
     </form>
   )
@@ -152,7 +166,7 @@ class NewCharacterForm extends React.Component {
         <option value='Villain'>Villain</option>
       </select><br />
       <label htmlFor='reason'>Reason:</label><br />
-      <textarea rows='4' cols='50' name='reason' onChange={this.handleInput}>Enter text here...</textarea><br />
+      <textarea rows='4' cols='50' name='reason' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
       <input type='submit' value='Add Character' />
     </form>
   )
@@ -167,14 +181,14 @@ const testMovies =
     releaseDate: Date,
     comics:
       [
-        {title: 'Civil War', id: 1},
-        {title: 'Dark Reign', id: 2}
+        { title: 'Civil War', id: 1 },
+        { title: 'Dark Reign', id: 2 }
+      ],
+    characters:
+      [
+        { name: 'Namor', id: 1 },
+        { name: 'Silver Surfer', id: 2 }
       ]
-    // characters:
-    //   [
-    //     { name: 'Namor', id: 1 },
-    //     { name: 'Silver Surfer', id: 2 }
-    //   ]
   },
   2:
   {
@@ -183,14 +197,14 @@ const testMovies =
     releaseDate: Date,
     comics:
       [
-        {title: 'The Mighty Thor', id: 1},
-        {title: 'Thor Ragnorak', id: 2}
+        { title: 'The Mighty Thor', id: 1 },
+        { title: 'Thor Ragnorak', id: 2 }
+      ],
+    characters:
+      [
+        { name: 'Namor', id: 1 },
+        { name: 'Silver Surfer', id: 2 }
       ]
-    // characters:
-    //   [
-    //     { name: 'Namor', id: 1 },
-    //     { name: 'Silver Surfer', id: 2 }
-    //   ]
   }
 }
 
@@ -205,18 +219,44 @@ class App extends React.Component {
     Object.values(this.state.movies)
 
   getMovieCategory = () =>
-    this.state.movies[this.state.currentMovie]  
+    this.state.movies[this.state.currentMovie]
 
-  addNewCharCurrentCategory = (title) => {
-    console.log('addNewCharCurrentCategory: ', title)
+  getNextId = () =>
+    Math.max(...this.getMovieCategory().characters.map(character => character.id)) + 1
+
+  addNewCharCurrentCategory = (name) => {
+    const newChar = {
+      name,
+      id: this.getNextId()
+    }
+
+    let movies = { ...this.state.movies }
+
+    movies[this.state.currentMovie].characters.push(newChar)
+
+    this.setState({ movies })
+  }
+
+  addNewComicCurrentCategory = (title) => {
+    const newComic = {
+      title,
+      id: this.getNextId()
+    }
+
+    let movies = { ...this.state.movies }
+
+    movies[this.state.currentMovie].comics.push(newComic)
+
+    this.setState({ movies })
   }
 
   render = () => (
     <div>
       {categoryList(this.getAllMovies())}
-      <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
-      {/* <NewComicForm />
-      <NewSuggestionForm /> */}
+      {/* <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} /> */}
+      <NewComicForm addNewComic={this.addNewComicCurrentCategory}/>
+      {/* <NewSuggestionForm />
+      {singleCharacterList(this.getMovieCategory())} */}
       {singleComicList(this.getMovieCategory())}
       {/* {newMovieForm(testMovies)} */}
     </div>
