@@ -7,10 +7,17 @@ const moviePreview = (movie) => (
   </li>
 )
 
-const movieList = (movies) => (
+const movieList = (movie) => (
   <ul>
-    {movies.map(moviePreview)}
+    {movie.map(moviePreview)}
   </ul>
+)
+
+const singleMovieList = (movie) => (
+  <div>
+    {movie.category}
+    {movieList(movie.suggestion)}
+  </div>
 )
 
 const categoryPreview = (movie) => (
@@ -69,6 +76,21 @@ class NewSuggestionForm extends React.Component {
     futureRelease: Date,
     relatedMovie: '',
     plot: ''
+  }
+
+  handleInput = (evnt) => {
+    let newSuggestion = { ...this.state }
+
+    newSuggestion[evnt.target.name] = evnt.target.value
+
+    this.setState(newSuggestion)
+  }
+
+  handleSubmit = (evnt) => {
+    evnt.preventDefault();
+
+    this.props.addNewSuggestion(this.state.title)
+    this.setState({ title: '', futureRelease: '', relatedMovie: '', plot: '' })
   }
 
   render = () => (
@@ -188,7 +210,12 @@ const testMovies =
       [
         { name: 'Namor', id: 1 },
         { name: 'Silver Surfer', id: 2 }
-      ]
+      ],
+      suggestion:
+      [
+        {title: 'Doctor Doom', id: 1},
+        {title: 'Avengers Vs Xmen', id: 1}
+      ]  
   },
   2:
   {
@@ -255,7 +282,7 @@ class App extends React.Component {
     this.setState({ movies })
   }
 
-  addNewSuggestionCurrentCategory = () => {
+  addNewSuggestionCurrentCategory = (title) => {
     const newSuggestion = {
       title,
       id: this.getNextId()
@@ -273,10 +300,10 @@ class App extends React.Component {
       {categoryList(this.getAllMovies())}
       <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
       <NewComicForm addNewComic={this.addNewComicCurrentCategory} />
-      <NewSuggestionForm />
+      <NewSuggestionForm addNewSuggestion={this.addNewSuggestionCurrentCategory}/>
       {singleCharacterList(this.getMovieCategory())}
       {singleComicList(this.getMovieCategory())}
-      {/* {newMovieForm(testMovies)} */}
+      {singleMovieList(this.getMovieCategory())}
     </div>
   )
 }
