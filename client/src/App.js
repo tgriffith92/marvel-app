@@ -1,23 +1,22 @@
 import React from 'react';
 import './App.css';
 
-const testMovies = {
-  1: 
-  {
-    id: 1,
-    title: 'Iron Man'
-  }
-}
+const testMovies = [
+  {title: 'Iron Man', id: 1},
+  {title: 'Iron Man 2', id: 2}
+]
 
 const moviePreview = (movie) => (
-  <option value={movie.id}>{movie.title}</option>
+  <li>
+    {movie.id} - {movie.title}
+  </li>
 )
 
-// const movieList = (movies, currentMovie, onChange) => (
-//   <select value={currentMovie} onChange={(evnt) => onChange(evnt.target.value)}>
-//     {movies.map(moviePreview)}
-//   </select>
-// )
+const movieList = (movies, currentMovie, onChange) => (
+  <ul>
+    {movies.map(moviePreview)}
+  </ul>
+)
 
 class NewSuggestionForm extends React.Component {
   state = {
@@ -122,11 +121,21 @@ class NewCharacterForm extends React.Component {
 }
 
 class App extends React.Component {
+
+  // state = {
+  //   currentMovie: 1,
+  //   movies: testMovies
+  // }
+
+  // getAllMovies = () =>
+  //   Object.values(this.state.movies)
+
   render = () => (
     <div>
-      <NewCharacterForm />
+      {/* <NewCharacterForm />
       <NewComicForm />
-      <NewSuggestionForm />
+      <NewSuggestionForm /> */}
+      {movieList(testMovies)}
     </div>
   )
 }
