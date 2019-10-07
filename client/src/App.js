@@ -13,11 +13,11 @@ const moviePreview = (movie) => (
   <option value={movie.id}>{movie.title}</option>
 )
 
-const movieList = (movies, currentMovie, onChange) => (
-  <select value={currentMovie} onChange={(evnt) => onChange(evnt.target.value)}>
-    {movies.map(moviePreview)}
-  </select>
-)
+// const movieList = (movies, currentMovie, onChange) => (
+//   <select value={currentMovie} onChange={(evnt) => onChange(evnt.target.value)}>
+//     {movies.map(moviePreview)}
+//   </select>
+// )
 
 class NewSuggestionForm extends React.Component {
   state = {
