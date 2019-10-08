@@ -26,9 +26,9 @@ const categoryPreview = (movie) => (
   </option>
 )
 
-const categoryList = (characters) => (
-  <select>
-    {characters.map(categoryPreview)}
+const categoryList = (movie, onChange) => (
+  <select onChange={(evnt) => onChange(evnt.target.value)}>
+    {movie.map(categoryPreview)}
   </select>
 )
 
@@ -89,12 +89,12 @@ class NewSuggestionForm extends React.Component {
   handleSubmit = (evnt) => {
     evnt.preventDefault();
 
-    this.props.addNewSuggestion(this.state.title)
+    this.props.addNewSuggestion(this.state)
     this.setState({ title: '', futureRelease: '', relatedMovie: '', plot: '' })
   }
 
   render = () => (
-    <form>
+    <form onSubmit={this.handleSubmit}>
       <label htmlFor='title'>Title:</label><br />
       <input type='text' name='title' onChange={this.handleInput} placeholder='Dark Reign' /><br />
       <label htmlFor='futureRelease'>Future Release:</label><br />
@@ -256,6 +256,10 @@ class App extends React.Component {
   getNextId = () =>
     Math.max(...this.getMovieCategory().characters.map(character => character.id)) + 1
 
+  setCurrentMovie = (currentMovie) => {
+    this.setState({currentMovie})
+  }
+
   addNewCharCurrentCategory = (name) => {
     const newChar = {
       name,
@@ -297,7 +301,7 @@ class App extends React.Component {
 
   render = () => (
     <div>
-      {categoryList(this.getAllMovies())}
+      {categoryList(this.getAllMovies(), this.setCurrentMovie)}
       <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
       <NewComicForm addNewComic={this.addNewComicCurrentCategory} />
       <NewSuggestionForm addNewSuggestion={this.addNewSuggestionCurrentCategory}/>
