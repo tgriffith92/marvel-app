@@ -245,7 +245,7 @@ const testMovies =
 }
 
 const getMoviesFromServer = () =>
-  fetch('/api/movie')
+  fetch('/api/movie/')
     .then(res => res.json())
 
 // const getComicsFromServer = () =>
@@ -340,7 +340,7 @@ class App extends React.Component {
                   {singleComicList(this.getMovieCategory())}
                 </div>
               )} />
-            {/* <Route path='/comic/:id' component={SingleComic} /> */}
+            <Route path='/comic/:id' component={SingleComic} />
           </Switch>
         </Router>
       </aside>
