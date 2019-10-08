@@ -24,6 +24,8 @@ class Suggestion(models.Model):
     plot             = models.TextField()
 
 class Movie(models.Model):
-    title     = models.CharField(max_length=50)
-    year      = models.DateField()
-    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='characters', default=True)
+    title      = models.CharField(max_length=50)
+    year       = models.DateField()
+    comic      = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name='comics', default=True)
+    character  = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='characters', default=True)
+    suggestion = models.ForeignKey(Suggestion, on_delete=models.CASCADE, related_name='suggestions', default=True)

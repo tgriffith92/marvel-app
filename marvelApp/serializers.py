@@ -8,7 +8,9 @@ class MovieSerializer(serializers.ModelSerializer):
             'id', 
             'title', 
             'year',
-            'character'
+            'comic',
+            'character',
+            'suggestion'
             ]
 
 class ComicSerializer(serializers.ModelSerializer):
