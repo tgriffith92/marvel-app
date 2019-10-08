@@ -1,4 +1,6 @@
 import React from 'react';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import SingleComic from './SingleComic'
 import './App.css';
 
 const moviePreview = (movie) => (
@@ -211,11 +213,11 @@ const testMovies =
         { name: 'Namor', id: 1 },
         { name: 'Silver Surfer', id: 2 }
       ],
-      suggestion:
+    suggestion:
       [
-        {title: 'Doctor Doom', id: 1},
-        {title: 'Avengers Vs Xmen', id: 1}
-      ]  
+        { title: 'Doctor Doom', id: 1 },
+        { title: 'Avengers Vs Xmen', id: 1 }
+      ]
   },
   2:
   {
@@ -234,11 +236,27 @@ const testMovies =
       ],
     suggestion:
       [
-        {title: 'Doctor Doom', id: 1},
-        {title: 'Avengers Vs Xmen', id: 1}
+        { title: 'Doctor Doom', id: 1 },
+        { title: 'Avengers Vs Xmen', id: 1 }
       ]
   }
 }
+
+// const getMoviesFromServer = () =>
+//   fetch('/api/movie')
+//     .then(res => res.json())
+
+// const getComicsFromServer = () =>
+//   fetch('/api/comic')
+//     .then(res => res.json())
+
+// const getCharactersFromServer = () =>
+//   fetch('/api/character')
+//     .then(res => res.json())
+
+// const getSuggestionsFromServer = () =>
+//   fetch('/api/suggestion')
+//     .then(res => res.json())
 
 class App extends React.Component {
 
@@ -257,7 +275,7 @@ class App extends React.Component {
     Math.max(...this.getMovieCategory().characters.map(character => character.id)) + 1
 
   setCurrentMovie = (currentMovie) => {
-    this.setState({currentMovie})
+    this.setState({ currentMovie })
   }
 
   addNewCharCurrentCategory = (name) => {
@@ -301,13 +319,22 @@ class App extends React.Component {
 
   render = () => (
     <div>
-      {categoryList(this.getAllMovies(), this.setCurrentMovie)}
-      <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
-      <NewComicForm addNewComic={this.addNewComicCurrentCategory} />
-      <NewSuggestionForm addNewSuggestion={this.addNewSuggestionCurrentCategory}/>
-      {singleCharacterList(this.getMovieCategory())}
-      {singleComicList(this.getMovieCategory())}
-      {singleMovieList(this.getMovieCategory())}
+      <main>
+        {categoryList(this.getAllMovies(), this.setCurrentMovie)}
+        <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
+        {singleCharacterList(this.getMovieCategory())}
+        <NewComicForm addNewComic={this.addNewComicCurrentCategory} />
+        {singleComicList(this.getMovieCategory())}
+        <NewSuggestionForm addNewSuggestion={this.addNewSuggestionCurrentCategory} />
+        {singleMovieList(this.getMovieCategory())}
+      </main>
+      <div>
+        <Router>
+          <Switch>
+            <Route path='/comic/:id' component={SingleComic}/>
+          </Switch>
+        </Router>
+      </div>
     </div>
   )
 }
