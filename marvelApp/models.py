@@ -24,5 +24,6 @@ class Suggestion(models.Model):
     plot             = models.TextField()
 
 class Movie(models.Model):
-    title = models.CharField(max_length=50)
-    year  = models.DateField()
+    title     = models.CharField(max_length=50)
+    year      = models.DateField()
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='characters', default=True)

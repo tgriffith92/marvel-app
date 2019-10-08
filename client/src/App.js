@@ -36,7 +36,9 @@ const categoryList = (movie, onChange) => (
 
 const comicPreview = (comic) => (
   <li>
-    {comic.id} - {comic.title}
+    <Link to={`/comic/${comic.id}`}>
+      {comic.id} - {comic.title}
+    </Link>
   </li>
 )
 
@@ -242,9 +244,9 @@ const testMovies =
   }
 }
 
-// const getMoviesFromServer = () =>
-//   fetch('/api/movie')
-//     .then(res => res.json())
+const getMoviesFromServer = () =>
+  fetch('/api/movie')
+    .then(res => res.json())
 
 // const getComicsFromServer = () =>
 //   fetch('/api/comic')
@@ -263,6 +265,13 @@ class App extends React.Component {
   state = {
     currentMovie: 1,
     movies: testMovies
+  }
+
+  componentDidMount = () => {
+    getMoviesFromServer()
+      .then(movies => {
+        console.log('movies from server: ', movies)
+      })
   }
 
   getAllMovies = () =>
@@ -319,22 +328,29 @@ class App extends React.Component {
 
   render = () => (
     <div>
+      <aside>
+        <Router>
+          <Switch>
+            <Route
+              path='/'
+              exact
+              render={() => (
+                <div>
+                  {categoryList(this.getAllMovies(), this.setCurrentMovie)}
+                  {singleComicList(this.getMovieCategory())}
+                </div>
+              )} />
+            {/* <Route path='/comic/:id' component={SingleComic} /> */}
+          </Switch>
+        </Router>
+      </aside>
       <main>
-        {categoryList(this.getAllMovies(), this.setCurrentMovie)}
         <NewCharacterForm addNewChar={this.addNewCharCurrentCategory} />
         {singleCharacterList(this.getMovieCategory())}
         <NewComicForm addNewComic={this.addNewComicCurrentCategory} />
-        {singleComicList(this.getMovieCategory())}
         <NewSuggestionForm addNewSuggestion={this.addNewSuggestionCurrentCategory} />
         {singleMovieList(this.getMovieCategory())}
       </main>
-      <div>
-        <Router>
-          <Switch>
-            <Route path='/comic/:id' component={SingleComic}/>
-          </Switch>
-        </Router>
-      </div>
     </div>
   )
 }

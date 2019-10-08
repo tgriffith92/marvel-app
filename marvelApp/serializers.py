@@ -7,7 +7,8 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = [
             'id', 
             'title', 
-            'year'
+            'year',
+            'character'
             ]
 
 class ComicSerializer(serializers.ModelSerializer):
