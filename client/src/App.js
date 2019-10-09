@@ -18,7 +18,7 @@ const movieList = (movie) => (
 const singleMovieList = (movie) => (
   <div>
     {movie.title}
-    {movieList(movie.suggestion)}
+    {movieList(movie.suggestions)}
   </div>
 )
 
@@ -42,18 +42,27 @@ const comicPreview = (comic) => (
   </li>
 )
 
-const comicList = (comic) => (
-  <ul>
-    {comic.map(comicPreview)}
-  </ul>
-)
+const comicList = (comic) => {
+  console.log('comicList - comic', comic)
+  return (
+    <ul>
+      {(comic && comic.length) ? comic.map(comicPreview) : null}
+    </ul>
+  )
+}
 
-const singleComicList = (movie) => (
-  <div>
-    {movie.title}
-    {comicList(movie.comic)}
-  </div>
-)
+const singleComicList = (movie) => {
+  console.log('singleComicList - movie', movie)
+  if (movie === undefined) {
+    return null
+  }
+  return (
+    <div>
+      {movie.title}
+      {comicList(movie.comics)}
+    </div>
+  )
+}
 
 const characterPreview = (character) => (
   <li>
@@ -67,12 +76,14 @@ const characterList = (character) => (
   </ul>
 )
 
-const singleCharacterList = (movie) => (
-  <div>
-    {movie.title}
-    {characterList(movie.character)}
-  </div>
-)
+const singleCharacterList = (movie) => {
+  return (
+    <div>
+      {movie.title}
+      {characterList(movie.characters)}
+    </div>
+  )
+}
 
 class NewSuggestionForm extends React.Component {
   state = {
@@ -190,51 +201,51 @@ class NewCharacterForm extends React.Component {
   )
 }
 
-const testMovies =
-{
-  1:
-  {
-    id: 1,
-    title: 'Iron Man',
-    year: '2008-05-02',
-    comic:
-      [
-        { id: 1, title: 'Civil War', rating: 5, review: 'Great comic.'},
-        { id: 2, title: 'Dark Reign', rating: 5, review: 'Great comic.'}
-      ],
-    character:
-      [
-        { name: 'Namor', id: 1 },
-        { name: 'Silver Surfer', id: 2 }
-      ],
-    suggestion:
-      [
-        { title: 'Doctor Doom', id: 1 },
-        { title: 'Avengers Vs Xmen', id: 1 }
-      ]
-  },
-  2:
-  {
-    id: 2,
-    title: 'Thor',
-    year: Date,
-    comic:
-      [
-        { id: 1, title: 'The Mighty Thor', rating: 5, review: 'Great comic.' },
-        { id: 2, title: 'Thor Ragnorak', rating: 5, review: 'Great comic.'  }
-      ],
-    character:
-      [
-        { name: 'Namor', id: 1 },
-        { name: 'Silver Surfer', id: 2 }
-      ],
-    suggestion:
-      [
-        { title: 'Doctor Doom', id: 1 },
-        { title: 'Avengers Vs Xmen', id: 2 }
-      ]
-  }
-}
+// const testMovies =
+// {
+//   1:
+//   {
+//     id: 1,
+//     title: 'Iron Man',
+//     year: '2008-05-02',
+//     comic:
+//       [
+//         { id: 1, title: 'Civil War', rating: 5, review: 'Great comic.' },
+//         { id: 2, title: 'Dark Reign', rating: 5, review: 'Great comic.' }
+//       ],
+//     character:
+//       [
+//         { name: 'Namor', id: 1 },
+//         { name: 'Silver Surfer', id: 2 }
+//       ],
+//     suggestion:
+//       [
+//         { title: 'Doctor Doom', id: 1 },
+//         { title: 'Avengers Vs Xmen', id: 1 }
+//       ]
+//   },
+//   2:
+//   {
+//     id: 2,
+//     title: 'Thor',
+//     year: Date,
+//     comic:
+//       [
+//         { id: 1, title: 'The Mighty Thor', rating: 5, review: 'Great comic.' },
+//         { id: 2, title: 'Thor Ragnorak', rating: 5, review: 'Great comic.' }
+//       ],
+//     character:
+//       [
+//         { name: 'Namor', id: 1 },
+//         { name: 'Silver Surfer', id: 2 }
+//       ],
+//     suggestion:
+//       [
+//         { title: 'Doctor Doom', id: 1 },
+//         { title: 'Avengers Vs Xmen', id: 2 }
+//       ]
+//   }
+// }
 
 const getMoviesFromServer = () =>
   fetch('/api/movie/')
@@ -265,22 +276,22 @@ class App extends React.Component {
 
   state = {
     currentMovie: 1,
-    movies: testMovies
+    movies: [],
+    isLoading: true
   }
 
   componentDidMount = () => {
     getMoviesFromServer()
-      .then(movies => movieArrayToObject(movies))
       .then(movies => {
-        this.setState({movies: trace(movies, "movies")})
+        this.setState({ ...this.state, movies: movies, isLoading: false },
+          console.log(this.state.movies))
       })
   }
 
   getAllMovies = () =>
     Object.values(this.state.movies)
 
-  getMovieTitle = () =>
-    trace(this.state.movies[this.state.currentMovie], 'getMovieTitle')
+  getMovieTitle = () => this.state.movies[this.state.currentMovie]
 
   getNextId = () =>
     Math.max(...this.getMovieTitle().character.map(character => character.id)) + 1
@@ -328,8 +339,12 @@ class App extends React.Component {
     this.setState({ movies })
   }
 
-  render = () => (
-    <div>
+  render = () => {
+    if (this.state.isLoading === true) {
+      console.log('page loading')
+      return (<h1>Loading</h1>);
+    }
+    return (<div>
       {/* <aside>
         <Router>
           <Switch>
@@ -353,7 +368,8 @@ class App extends React.Component {
         {singleMovieList(this.getMovieTitle())}
       </main>
     </div>
-  )
+    )
+  }
 }
 
 export default App;

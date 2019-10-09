@@ -1,18 +1,6 @@
 from rest_framework import serializers
 from .models import Movie, Comic, Character, Suggestion
 
-class MovieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = Movie
-        fields = [
-            'id', 
-            'title', 
-            'year',
-            'comic',
-            'character',
-            'suggestion'
-            ]
-
 class ComicSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Comic
@@ -42,4 +30,19 @@ class SuggestionSerializer(serializers.ModelSerializer):
             'future_release',
             'related_movie',
             'plot'
+            ]
+
+class MovieSerializer(serializers.ModelSerializer):
+    comics = ComicSerializer(many=True, read_only=True)
+    characters = CharacterSerializer(many=True, read_only=True)
+    suggestions = SuggestionSerializer(many=True, read_only=True)
+    class Meta:
+        model  = Movie
+        fields = [
+            'id', 
+            'title', 
+            'year',
+            'comics',
+            'characters',
+            'suggestions'
             ]
