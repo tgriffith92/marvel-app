@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class SingleComic extends Component {
     state = {
@@ -10,7 +10,7 @@ class SingleComic extends Component {
         fetch(`/api/comic/${this.props.match.params.id}/`)
             .then(res => res.json())
             .then(comic => {
-                this.setState({comic})
+                this.setState({ comic })
             })
     }
 
@@ -19,7 +19,7 @@ class SingleComic extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        if(prevProps.match.params.id !== this.props.match.params.id) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
             this.getSingleComic()
         }
     }

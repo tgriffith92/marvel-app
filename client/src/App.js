@@ -174,14 +174,6 @@ class NewCharacterForm extends React.Component {
     this.setState({ name: '', affiliation: '', reason: '' })
   }
 
-  // addNewChar = (newCharInfo) => {
-  //   saveCharToServer(newCharInfo)
-  //     .then(newChar => {
-  //       console.log(newChar);
-  //       newChar
-  //     })
-  // }
-
   render = () => (
     <form onSubmit={this.handleSubmit}>
       <label htmlFor='name'>Character Name:</label><br />
@@ -248,17 +240,19 @@ const getMoviesFromServer = () =>
   fetch('/api/movie/')
     .then(res => res.json())
 
-// const getComicsFromServer = () =>
-//   fetch('/api/comic')
-//     .then(res => res.json())
+const getComicsFromServer = () =>
+  fetch('/api/comic/')
+    .then(res => res.json())
 
-// const getCharactersFromServer = () =>
-//   fetch('/api/character')
-//     .then(res => res.json())
+const getCharactersFromServer = () =>
+  fetch('/api/character/')
+    .then(res => res.json())
 
-// const getSuggestionsFromServer = () =>
-//   fetch('/api/suggestion')
-//     .then(res => res.json())
+const getSuggestionsFromServer = () =>
+  fetch('/api/suggestion/')
+    .then(res => res.json())
+
+
 
 class App extends React.Component {
 
@@ -268,10 +262,11 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    getMoviesFromServer()
+    getSuggestionsFromServer()
       .then(movies => {
         console.log('movies from server: ', movies)
       })
+    
   }
 
   getAllMovies = () =>
