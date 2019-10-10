@@ -36,9 +36,7 @@ const titleList = (movie, onChange) => (
 
 const comicPreview = (comic) => (
   <li>
-    {/* <Link to={`/comic/${comic.id}`}> */}
     {comic.id} - {comic.title}
-    {/* </Link> */}
   </li>
 )
 
@@ -134,12 +132,13 @@ class NewComicForm extends React.Component {
     newComic[evnt.target.name] = evnt.target.value
 
     this.setState(newComic)
+  
   }
 
   handleSubmit = (evnt) => {
     evnt.preventDefault();
 
-    this.props.addNewComic(this.state.title)
+    this.props.addNewComic(this.state)
     this.setState({ title: '', rating: '', reason: '' })
   }
 
@@ -199,52 +198,6 @@ class NewCharacterForm extends React.Component {
   )
 }
 
-// const testMovies =
-// {
-//   1:
-//   {
-//     id: 1,
-//     title: 'Iron Man',
-//     year: '2008-05-02',
-//     comic:
-//       [
-//         { id: 1, title: 'Civil War', rating: 5, review: 'Great comic.' },
-//         { id: 2, title: 'Dark Reign', rating: 5, review: 'Great comic.' }
-//       ],
-//     character:
-//       [
-//         { name: 'Namor', id: 1 },
-//         { name: 'Silver Surfer', id: 2 }
-//       ],
-//     suggestion:
-//       [
-//         { title: 'Doctor Doom', id: 1 },
-//         { title: 'Avengers Vs Xmen', id: 1 }
-//       ]
-//   },
-//   2:
-//   {
-//     id: 2,
-//     title: 'Thor',
-//     year: Date,
-//     comic:
-//       [
-//         { id: 1, title: 'The Mighty Thor', rating: 5, review: 'Great comic.' },
-//         { id: 2, title: 'Thor Ragnorak', rating: 5, review: 'Great comic.' }
-//       ],
-//     character:
-//       [
-//         { name: 'Namor', id: 1 },
-//         { name: 'Silver Surfer', id: 2 }
-//       ],
-//     suggestion:
-//       [
-//         { title: 'Doctor Doom', id: 1 },
-//         { title: 'Avengers Vs Xmen', id: 2 }
-//       ]
-//   }
-// }
-
 const getMoviesFromServer = () =>
   fetch('/api/movie/')
     .then(res => res.json())
@@ -283,13 +236,13 @@ class App extends React.Component {
     this.state.movies[this.state.currentMovie - 1]
 
   getNextCharId = () =>
-    this.state.movies.characters !== undefined ? this.state.movies.characters.map(this.addNewComic) : null
+    this.state.movies.characters !== undefined ? this.state.movies.characters.map(this.addNewChar) : null
 
   getNextComicId = () =>
     this.state.movies.comics !== undefined ? this.state.movies.comics.map(this.addNewComic) : null
 
   getNextSuggestionId = () =>
-    this.state.movies.suggestions !== undefined ? this.state.movies.suggestions.map(this.addNewComic) : null
+    this.state.movies.suggestions !== undefined ? this.state.movies.suggestions.map(this.addNewSuggestion) : null
 
   setCurrentMovie = (currentMovie) => {
     this.setState({ currentMovie })
@@ -316,7 +269,7 @@ class App extends React.Component {
 
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie].comics.push(newComic)
+    movies[this.state.currentMovie - 1].comics.push(newComic)
 
     this.setState({ movies })
   }
@@ -329,7 +282,7 @@ class App extends React.Component {
 
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie].suggestions.push(newSuggestion)
+    movies[this.state.currentMovie - 1].suggestions.push(newSuggestion)
 
     this.setState({ movies })
   }
@@ -340,19 +293,9 @@ class App extends React.Component {
     }
     return (
       <div>
-        {/* <aside>
-        <Router>
-          <Switch>
-            <Route
-              path='/'
-              exact
-              render={() => (
-                
-              )} />
-            <Route path='/comic/:id' component={SingleComic} />
-          </Switch>
-        </Router>
-      </aside> */}
+        <aside>
+        
+      </aside>
         <main>
           {titleList(this.getAllMovies(), this.setCurrentMovie)}
           <NewCharacterForm addNewChar={this.addNewChar} />

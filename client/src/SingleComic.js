@@ -1,6 +1,52 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+// const testMovies =
+// {
+//   1:
+//   {
+//     id: 1,
+//     title: 'Iron Man',
+//     year: '2008-05-02',
+//     comic:
+//       [
+//         { id: 1, title: 'Civil War', rating: 5, review: 'Great comic.' },
+//         { id: 2, title: 'Dark Reign', rating: 5, review: 'Great comic.' }
+//       ],
+//     character:
+//       [
+//         { name: 'Namor', id: 1 },
+//         { name: 'Silver Surfer', id: 2 }
+//       ],
+//     suggestion:
+//       [
+//         { title: 'Doctor Doom', id: 1 },
+//         { title: 'Avengers Vs Xmen', id: 1 }
+//       ]
+//   },
+//   2:
+//   {
+//     id: 2,
+//     title: 'Thor',
+//     year: Date,
+//     comic:
+//       [
+//         { id: 1, title: 'The Mighty Thor', rating: 5, review: 'Great comic.' },
+//         { id: 2, title: 'Thor Ragnorak', rating: 5, review: 'Great comic.' }
+//       ],
+//     character:
+//       [
+//         { name: 'Namor', id: 1 },
+//         { name: 'Silver Surfer', id: 2 }
+//       ],
+//     suggestion:
+//       [
+//         { title: 'Doctor Doom', id: 1 },
+//         { title: 'Avengers Vs Xmen', id: 2 }
+//       ]
+//   }
+// }
+
 class SingleComic extends Component {
     state = {
         comic: {}
