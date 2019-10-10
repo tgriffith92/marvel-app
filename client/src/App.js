@@ -249,23 +249,15 @@ const getMoviesFromServer = () =>
   fetch('/api/movie/')
     .then(res => res.json())
 
-const getComicsFromServer = () =>
-  fetch('/api/comic/')
-    .then(res => res.json())
+const saveCharacterToServer = (newComic) =>
+  fetch('/api/character/',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newComic)
+    }
+  )
 
-// const getCharactersFromServer = () =>
-//   fetch('/api/character/')
-//     .then(res => res.json())
-
-// const getSuggestionsFromServer = () =>
-//   fetch('/api/suggestion/')
-//     .then(res => res.json())
-
-// const movieArrayToObject = (movies) =>
-//   movies.reduce((obj, movie) => {
-//     obj[movie.id] = movie;
-//     return obj;
-//   }, {})
 
 // const trace = (x, msg = "") => (console.log(msg, x), x)
 
@@ -303,7 +295,8 @@ class App extends React.Component {
     this.setState({ currentMovie })
   }
 
-  addNewChar = ({name}) => {
+  addNewChar = ({ name, reason}) => {
+    saveCharacterToServer({name, reason})
     const newChar = {
       name,
       id: this.getNextCharId()
@@ -313,10 +306,9 @@ class App extends React.Component {
     movies[this.state.currentMovie - 1].characters.push(newChar)
 
     this.setState({ movies })
-    console.log('movies', movies[0])
   }
 
-  addNewComic = ({title}) => {
+  addNewComic = ({ title }) => {
     const newComic = {
       title,
       id: this.getNextComicId()
@@ -329,7 +321,7 @@ class App extends React.Component {
     this.setState({ movies })
   }
 
-  addNewSuggestion = ({title}) => {
+  addNewSuggestion = ({ title }) => {
     const newSuggestion = {
       title,
       id: this.getNextSuggestionId()
@@ -347,8 +339,8 @@ class App extends React.Component {
       return (<h1>Loading</h1>);
     }
     return (
-    <div>
-      {/* <aside>
+      <div>
+        {/* <aside>
         <Router>
           <Switch>
             <Route
@@ -361,16 +353,16 @@ class App extends React.Component {
           </Switch>
         </Router>
       </aside> */}
-      <main>
-        {titleList(this.getAllMovies(), this.setCurrentMovie)}
-        <NewCharacterForm addNewChar={this.addNewChar} />
-        {singleCharacterList(this.getMovie())}
-        <NewComicForm addNewComic={this.addNewComic} />
-        {singleComicList(this.getMovie())}
-        <NewSuggestionForm addNewSuggestion={this.addNewSuggestion} />
-        {singleMovieList(this.getMovie())}
-      </main>
-    </div>
+        <main>
+          {titleList(this.getAllMovies(), this.setCurrentMovie)}
+          <NewCharacterForm addNewChar={this.addNewChar} />
+          {singleCharacterList(this.getMovie())}
+          <NewComicForm addNewComic={this.addNewComic} />
+          {singleComicList(this.getMovie())}
+          <NewSuggestionForm addNewSuggestion={this.addNewSuggestion} />
+          {singleMovieList(this.getMovie())}
+        </main>
+      </div>
     )
   }
 }
