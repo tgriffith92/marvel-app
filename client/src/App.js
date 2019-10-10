@@ -43,7 +43,6 @@ const comicPreview = (comic) => (
 )
 
 const comicList = (comic) => {
-  console.log('comicList - comic', comic)
   return (
     <ul>
       {(comic && comic.length) ? comic.map(comicPreview) : null}
@@ -52,7 +51,6 @@ const comicList = (comic) => {
 }
 
 const singleComicList = (movie) => {
-  console.log('singleComicList - movie', movie)
   if (movie === undefined) {
     return null
   }
@@ -181,7 +179,7 @@ class NewCharacterForm extends React.Component {
   handleSubmit = (evnt) => {
     evnt.preventDefault();
 
-    this.props.addNewChar(this.state.name)
+    this.props.addNewChar(this.state)
     this.setState({ name: '', affiliation: '', reason: '' })
   }
 
@@ -263,14 +261,13 @@ const getComicsFromServer = () =>
 //   fetch('/api/suggestion/')
 //     .then(res => res.json())
 
-const movieArrayToObject = (movies) =>
-  movies.reduce((obj, movie) => {
-    obj[movie.id] = movie;
-    return obj;
-  }, {})
+// const movieArrayToObject = (movies) =>
+//   movies.reduce((obj, movie) => {
+//     obj[movie.id] = movie;
+//     return obj;
+//   }, {})
 
-const trace = (x, msg = "") => (console.log(msg, x), x)
-
+// const trace = (x, msg = "") => (console.log(msg, x), x)
 
 class App extends React.Component {
 
@@ -283,68 +280,74 @@ class App extends React.Component {
   componentDidMount = () => {
     getMoviesFromServer()
       .then(movies => {
-        this.setState({ ...this.state, movies: movies, isLoading: false },
-          console.log(this.state.movies))
+        this.setState({ ...this.state, movies: movies, isLoading: false })
       })
   }
 
   getAllMovies = () =>
     Object.values(this.state.movies)
 
-  getMovieTitle = () => this.state.movies[this.state.currentMovie]
+  getMovie = () =>
+    this.state.movies[this.state.currentMovie - 1]
 
-  getNextId = () =>
-    Math.max(...this.getMovieTitle().character.map(character => character.id)) + 1
+  getNextCharId = () =>
+    this.state.movies.characters !== undefined ? this.state.movies.characters.map(this.addNewComic) : null
+
+  getNextComicId = () =>
+    this.state.movies.comics !== undefined ? this.state.movies.comics.map(this.addNewComic) : null
+
+  getNextSuggestionId = () =>
+    this.state.movies.suggestions !== undefined ? this.state.movies.suggestions.map(this.addNewComic) : null
 
   setCurrentMovie = (currentMovie) => {
     this.setState({ currentMovie })
   }
 
-  addNewCharCurrentTitle = (name) => {
+  addNewChar = ({name}) => {
     const newChar = {
       name,
-      id: this.getNextId()
+      id: this.getNextCharId()
     }
-
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie].character.push(newChar)
+    movies[this.state.currentMovie - 1].characters.push(newChar)
 
     this.setState({ movies })
+    console.log('movies', movies[0])
   }
 
-  addNewComicCurrentTitle = (title) => {
+  addNewComic = ({title}) => {
     const newComic = {
       title,
-      id: this.getNextId()
+      id: this.getNextComicId()
     }
 
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie].comic.push(newComic)
+    movies[this.state.currentMovie].comics.push(newComic)
 
     this.setState({ movies })
   }
 
-  addNewSuggestionCurrentTitle = (title) => {
+  addNewSuggestion = ({title}) => {
     const newSuggestion = {
       title,
-      id: this.getNextId()
+      id: this.getNextSuggestionId()
     }
 
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie].suggestion.push(newSuggestion)
+    movies[this.state.currentMovie].suggestions.push(newSuggestion)
 
     this.setState({ movies })
   }
 
   render = () => {
     if (this.state.isLoading === true) {
-      console.log('page loading')
       return (<h1>Loading</h1>);
     }
-    return (<div>
+    return (
+    <div>
       {/* <aside>
         <Router>
           <Switch>
@@ -360,12 +363,12 @@ class App extends React.Component {
       </aside> */}
       <main>
         {titleList(this.getAllMovies(), this.setCurrentMovie)}
-        {singleComicList(this.getMovieTitle())}
-        <NewCharacterForm addNewChar={this.addNewCharCurrentTitle} />
-        {singleCharacterList(this.getMovieTitle())}
-        <NewComicForm addNewComic={this.addNewComicCurrentTitle} />
-        <NewSuggestionForm addNewSuggestion={this.addNewSuggestionCurrentTitle} />
-        {singleMovieList(this.getMovieTitle())}
+        <NewCharacterForm addNewChar={this.addNewChar} />
+        {singleCharacterList(this.getMovie())}
+        <NewComicForm addNewComic={this.addNewComic} />
+        {singleComicList(this.getMovie())}
+        <NewSuggestionForm addNewSuggestion={this.addNewSuggestion} />
+        {singleMovieList(this.getMovie())}
       </main>
     </div>
     )
