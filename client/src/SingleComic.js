@@ -74,6 +74,8 @@ class SingleComic extends Component {
         return (
             <div>
                 <Link to='/'>Home</Link>
+                <h1>Iron Man</h1>
+                <p>{this.state.comic.title}</p>
             </div>
         )
     }

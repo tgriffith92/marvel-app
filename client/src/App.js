@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import SingleComic from './SingleComic'
+import { Button } from 'react-bulma-components'
 import './App.css';
 
 const moviePreview = (movie) => (
@@ -36,7 +37,9 @@ const titleList = (movie, onChange) => (
 
 const comicPreview = (comic) => (
   <li>
-    {comic.id} - {comic.title}
+    <Link to={`/comic/${comic.id}`}>
+      {comic.id} - {comic.title}
+    </Link>
   </li>
 )
 
@@ -84,8 +87,8 @@ const singleCharacterList = (movie) => {
 class NewSuggestionForm extends React.Component {
   state = {
     title: '',
-    year: Date,
-    relatedMovie: '',
+    future_release: Date,
+    related_movie: '',
     plot: ''
   }
 
@@ -101,20 +104,20 @@ class NewSuggestionForm extends React.Component {
     evnt.preventDefault();
 
     this.props.addNewSuggestion(this.state)
-    this.setState({ title: '', year: '', relatedMovie: '', plot: '' })
+    this.setState({ title: '', future_release: '', related_movie: '', plot: '' })
   }
 
   render = () => (
     <form onSubmit={this.handleSubmit}>
       <label htmlFor='title'>Title:</label><br />
       <input type='text' name='title' onChange={this.handleInput} placeholder='Dark Reign' /><br />
-      <label htmlFor='year'>Year:</label><br />
-      <input type='date' name='year' onChange={this.handleInput} /><br />
-      <label htmlFor='relatedMovie'>Tie-in Movie:</label><br />
-      <input type='text' name='relatedMovie' onChange={this.handleInput} placeholder='Black Panther 2' /><br />
+      <label htmlFor='future_release'>Year:</label><br />
+      <input type='date' name='future_release' onChange={this.handleInput} /><br />
+      <label htmlFor='related_movie'>Tie-in Movie:</label><br />
+      <input type='text' name='related_movie' onChange={this.handleInput} placeholder='Black Panther 2' /><br />
       <label htmlFor='plot'>Plot:</label><br />
       <textarea rows='4' cols='50' name='plot' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
-      <input type='submit' value='Add Movie' />
+      <Button type='submit'>Add Movie</Button>
     </form>
   )
 }
@@ -123,7 +126,7 @@ class NewComicForm extends React.Component {
   state = {
     title: '',
     rating: 1,
-    reason: ''
+    review: ''
   }
 
   handleInput = (evnt) => {
@@ -132,14 +135,14 @@ class NewComicForm extends React.Component {
     newComic[evnt.target.name] = evnt.target.value
 
     this.setState(newComic)
-  
+
   }
 
   handleSubmit = (evnt) => {
     evnt.preventDefault();
 
     this.props.addNewComic(this.state)
-    this.setState({ title: '', rating: '', reason: '' })
+    this.setState({ title: '', rating: '', review: '' })
   }
 
   render = () => (
@@ -148,9 +151,9 @@ class NewComicForm extends React.Component {
       <input type='text' name='title' onChange={this.handleInput} placeholder='Civil War' /><br />
       <label htmlFor='rating'>Rating(1-5):</label><br />
       <input type='number' name='rating' min='1' max='5' onChange={this.handleInput} /><br />
-      <label htmlFor='reason'>Reason:</label><br />
-      <textarea rows='4' cols='50' name='reason' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
-      <input type='submit' value='Add Comic' />
+      <label htmlFor='review'>Review:</label><br />
+      <textarea rows='4' cols='50' name='review' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
+      <Button type='submit'>Add Comic</Button>
     </form>
   )
 }
@@ -193,7 +196,7 @@ class NewCharacterForm extends React.Component {
       </select><br />
       <label htmlFor='reason'>Reason:</label><br />
       <textarea rows='4' cols='50' name='reason' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
-      <input type='submit' value='Add Character' />
+      <Button type='submit' color='info' outlined rounded size='large'>Add Character</Button>
     </form>
   )
 }
@@ -202,15 +205,31 @@ const getMoviesFromServer = () =>
   fetch('/api/movie/')
     .then(res => res.json())
 
-const saveCharacterToServer = (newComic) =>
+const saveCharacterToServer = (newChar) =>
   fetch('/api/character/',
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newComic)
+      body: JSON.stringify(newChar)
     }
   )
 
+const saveComicToServer = (newComic) =>
+  fetch('/api/comic/',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newComic)
+    }).then(res => res.json())
+
+const saveSuggestionToServer = (newSuggestion) =>
+  fetch('/api/suggestion/',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newSuggestion)
+    }
+  )
 
 // const trace = (x, msg = "") => (console.log(msg, x), x)
 
@@ -229,8 +248,12 @@ class App extends React.Component {
       })
   }
 
-  getAllMovies = () =>
-    Object.values(this.state.movies)
+  getAllMovies = () => {
+    console.log(this.state)
+    return Object.values(this.state.movies)
+    
+  }
+    
 
   getMovie = () =>
     this.state.movies[this.state.currentMovie - 1]
@@ -248,8 +271,8 @@ class App extends React.Component {
     this.setState({ currentMovie })
   }
 
-  addNewChar = ({ name, reason}) => {
-    saveCharacterToServer({name, reason})
+  addNewChar = ({ name, reason }) => {
+    saveCharacterToServer({ name, reason })
     const newChar = {
       name,
       id: this.getNextCharId()
@@ -261,20 +284,28 @@ class App extends React.Component {
     this.setState({ movies })
   }
 
-  addNewComic = ({ title }) => {
-    const newComic = {
-      title,
-      id: this.getNextComicId()
-    }
+  addNewComic = ({ title, rating, review }) => {
+
+    let movie = this.state.currentMovie
+    saveComicToServer({ title, rating, review, movie })
+    .then(newDBComic => {
+      console.log(newDBComic)
+      const newComic = {
+        title,
+        id: this.getNextComicId()
+      }
+    })
+
 
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie - 1].comics.push(newComic)
+    // movies[this.state.currentMovie - 1].comics.push(newComic)
 
     this.setState({ movies })
   }
 
-  addNewSuggestion = ({ title }) => {
+  addNewSuggestion = ({ title, future_release, related_movie, plot }) => {
+    saveSuggestionToServer({ title, future_release, related_movie, plot })
     const newSuggestion = {
       title,
       id: this.getNextSuggestionId()
@@ -294,14 +325,26 @@ class App extends React.Component {
     return (
       <div>
         <aside>
-        
-      </aside>
+          <Router>
+            <Switch>
+              <Route
+                path='/'
+                exact
+                render={() => (
+                  <div>
+                    {titleList(this.getAllMovies(), this.setCurrentMovie)}
+                    {singleComicList(this.getMovie())}
+                  </div>
+                )} />
+              <Route path='/comic/:id' component={SingleComic} />
+            </Switch>
+          </Router>
+        </aside>
         <main>
-          {titleList(this.getAllMovies(), this.setCurrentMovie)}
+
           <NewCharacterForm addNewChar={this.addNewChar} />
           {singleCharacterList(this.getMovie())}
           <NewComicForm addNewComic={this.addNewComic} />
-          {singleComicList(this.getMovie())}
           <NewSuggestionForm addNewSuggestion={this.addNewSuggestion} />
           {singleMovieList(this.getMovie())}
         </main>

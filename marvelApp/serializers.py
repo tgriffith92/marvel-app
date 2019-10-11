@@ -8,7 +8,8 @@ class ComicSerializer(serializers.ModelSerializer):
             'id', 
             'title', 
             'rating',
-            'review'
+            'review',
+            'movie'
             ]
 
 class CharacterSerializer(serializers.ModelSerializer):
@@ -18,7 +19,8 @@ class CharacterSerializer(serializers.ModelSerializer):
             'id', 
             'name', 
             'affiliation',
-            'reason'
+            'reason',
+            'movie'
             ]
 
 class SuggestionSerializer(serializers.ModelSerializer):
@@ -29,7 +31,8 @@ class SuggestionSerializer(serializers.ModelSerializer):
             'title', 
             'future_release',
             'related_movie',
-            'plot'
+            'plot',
+            'movie'
             ]
 
 class MovieSerializer(serializers.ModelSerializer):
