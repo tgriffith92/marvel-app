@@ -211,8 +211,7 @@ const saveCharacterToServer = (newChar) =>
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newChar)
-    }
-  )
+    }).then(res => res.json())
 
 const saveComicToServer = (newComic) =>
   fetch('/api/comic/',
@@ -228,8 +227,7 @@ const saveSuggestionToServer = (newSuggestion) =>
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newSuggestion)
-    }
-  )
+    }).then(res => res.json())
 
 // const trace = (x, msg = "") => (console.log(msg, x), x)
 
@@ -272,14 +270,19 @@ class App extends React.Component {
   }
 
   addNewChar = ({ name, reason }) => {
-    saveCharacterToServer({ name, reason })
-    const newChar = {
-      name,
-      id: this.getNextCharId()
-    }
+    let movie = this.state.currentMovie
+    saveCharacterToServer({ name, reason, movie })
+    .then(newDBChar => {
+      console.log(newDBChar)
+      
+    })
+    // const newChar = {
+    //   name,
+    //   id: this.getNextCharId()
+    // }
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie - 1].characters.push(newChar)
+    // movies[this.state.currentMovie - 1].characters.push(newChar)
 
     this.setState({ movies })
   }
@@ -288,32 +291,40 @@ class App extends React.Component {
 
     let movie = this.state.currentMovie
     saveComicToServer({ title, rating, review, movie })
-    .then(newDBComic => {
-      console.log(newDBComic)
-      const newComic = {
-        title,
-        id: this.getNextComicId()
-      }
+    .then(movies => {
+      movies = {...this.state.movies}
+      this.setState({ movies })
+      
     })
 
+    // const newComic = {
+    //   title,
+    //   id: this.getNextComicId()
+    // }
 
-    let movies = { ...this.state.movies }
+    // let movies = { ...this.state.movies }
 
     // movies[this.state.currentMovie - 1].comics.push(newComic)
 
-    this.setState({ movies })
+    
   }
 
   addNewSuggestion = ({ title, future_release, related_movie, plot }) => {
-    saveSuggestionToServer({ title, future_release, related_movie, plot })
-    const newSuggestion = {
-      title,
-      id: this.getNextSuggestionId()
-    }
+    let movie = this.state.currentMovie
+    saveSuggestionToServer({ title, future_release, related_movie, plot, movie})
+    .then(newDBSuggestion => {
+      console.log(newDBSuggestion)
+      
+    })
+
+    // const newSuggestion = {
+    //   title,
+    //   id: this.getNextComicId()
+    // }
 
     let movies = { ...this.state.movies }
 
-    movies[this.state.currentMovie - 1].suggestions.push(newSuggestion)
+    // movies[this.state.currentMovie - 1].suggestions.push(newSuggestion)
 
     this.setState({ movies })
   }
