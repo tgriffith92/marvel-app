@@ -238,12 +238,20 @@ const changeIf = (p) => (f) => (o) => p(o) ? f(o) : o
 
 const modifyAllIf = (p) => (f) => onEvery(changeIf(p)(f))
 
-const appendCharToMovies = (newChar) => 
+const appendCharToMovies = (newChar) =>
   modifyAllIf
     (m => m.id === newChar.movie)
-    ( modifyAt
-        ('characters')
-        (appendTo(newChar))
+    (modifyAt
+      ('characters')
+      (appendTo(newChar))
+    )
+
+const appendComicToMovies = (newComic) =>
+  modifyAllIf
+    (m => m.id === newComic.movie)
+    (modifyAt
+      ('comics')
+      (appendTo(newComic))
     )
 
 class App extends React.Component {
@@ -264,7 +272,7 @@ class App extends React.Component {
   getAllMovies = () => {
     console.log(this.state)
     return Object.values(this.state.movies)
-    
+
   }
 
   getMovie = () =>
@@ -285,36 +293,37 @@ class App extends React.Component {
 
   addNewChar = ({ name, reason }) => {
     saveCharacterToServer({ name, reason, movie: this.state.currentMovie })
-    .then(newDBChar => {
-      let movies = 
-        appendCharToMovies
-          (newDBChar)
-          ([...this.state.movies])
-  
-      this.setState({ movies })
-      
-    })
+      .then(newDBChar => {
+        let movies =
+          appendCharToMovies
+            (newDBChar)
+            ([...this.state.movies])
+
+        this.setState({ movies })
+
+      })
   }
 
   addNewComic = ({ title, rating, review }) => {
+    saveComicToServer({ title, rating, review, movie: this.state.currentMovie })
+      .then(newDBComic => {
+        let movies =
+          appendComicToMovies
+            (newDBComic)
+            ([...this.state.movies])
 
-    let movie = this.state.currentMovie
-    saveComicToServer({ title, rating, review, movie })
-    .then(movies => {
-      movies = {...this.state.movies}
-      this.setState({ movies })
-      
-    })
+            this.setState({movies})
+      })
 
   }
 
   addNewSuggestion = ({ title, future_release, related_movie, plot }) => {
     let movie = this.state.currentMovie
-    saveSuggestionToServer({ title, future_release, related_movie, plot, movie})
-    .then(newDBSuggestion => {
-      console.log(newDBSuggestion)
-      
-    })
+    saveSuggestionToServer({ title, future_release, related_movie, plot, movie })
+      .then(newDBSuggestion => {
+        console.log(newDBSuggestion)
+
+      })
 
     // const newSuggestion = {
     //   title,
@@ -334,7 +343,7 @@ class App extends React.Component {
     }
     return (
       <div className='container'>
-        <aside>
+        <aside className='container'>
           <Router>
             <Switch>
               <Route
@@ -350,7 +359,7 @@ class App extends React.Component {
             </Switch>
           </Router>
         </aside>
-        <main>
+        <main className='container'>
 
           <NewCharacterForm addNewChar={this.addNewChar} />
           {singleCharacterList(this.getMovie())}
