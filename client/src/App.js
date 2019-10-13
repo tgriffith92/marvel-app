@@ -231,6 +231,21 @@ const saveSuggestionToServer = (newSuggestion) =>
 
 // const trace = (x, msg = "") => (console.log(msg, x), x)
 
+const onEvery = (f) => (xs) => xs.map(f)
+const appendTo = (a) => l => !l ? [a] : (l.push(a), l)
+const modifyAt = (k) => (f) => (o) => (o[k] = f(o[k]), o)
+const changeIf = (p) => (f) => (o) => p(o) ? f(o) : o
+
+const modifyAllIf = (p) => (f) => onEvery(changeIf(p)(f))
+
+const appendCharToMovies = (newChar) => 
+  modifyAllIf
+    (m => m.id === newChar.movie)
+    ( modifyAt
+        ('characters')
+        (appendTo(newChar))
+    )
+
 class App extends React.Component {
 
   state = {
@@ -251,7 +266,6 @@ class App extends React.Component {
     return Object.values(this.state.movies)
     
   }
-    
 
   getMovie = () =>
     this.state.movies[this.state.currentMovie - 1]
@@ -270,21 +284,16 @@ class App extends React.Component {
   }
 
   addNewChar = ({ name, reason }) => {
-    let movie = this.state.currentMovie
-    saveCharacterToServer({ name, reason, movie })
+    saveCharacterToServer({ name, reason, movie: this.state.currentMovie })
     .then(newDBChar => {
-      console.log(newDBChar)
+      let movies = 
+        appendCharToMovies
+          (newDBChar)
+          ([...this.state.movies])
+  
+      this.setState({ movies })
       
     })
-    // const newChar = {
-    //   name,
-    //   id: this.getNextCharId()
-    // }
-    let movies = { ...this.state.movies }
-
-    // movies[this.state.currentMovie - 1].characters.push(newChar)
-
-    this.setState({ movies })
   }
 
   addNewComic = ({ title, rating, review }) => {
@@ -297,16 +306,6 @@ class App extends React.Component {
       
     })
 
-    // const newComic = {
-    //   title,
-    //   id: this.getNextComicId()
-    // }
-
-    // let movies = { ...this.state.movies }
-
-    // movies[this.state.currentMovie - 1].comics.push(newComic)
-
-    
   }
 
   addNewSuggestion = ({ title, future_release, related_movie, plot }) => {
@@ -334,7 +333,7 @@ class App extends React.Component {
       return (<h1>Loading</h1>);
     }
     return (
-      <div>
+      <div className='container'>
         <aside>
           <Router>
             <Switch>

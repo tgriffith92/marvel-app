@@ -74,8 +74,10 @@ class SingleComic extends Component {
         return (
             <div>
                 <Link to='/'>Home</Link>
-                <h1>Iron Man</h1>
+                <h1>Comic</h1>
                 <p>{this.state.comic.title}</p>
+                <p>{this.state.comic.rating}</p>
+                <p>{this.state.comic.review}</p>
             </div>
         )
     }
