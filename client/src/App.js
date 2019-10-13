@@ -254,6 +254,14 @@ const appendComicToMovies = (newComic) =>
       (appendTo(newComic))
     )
 
+const appendSuggestionToMovies = (newSuggestion) =>
+  modifyAllIf
+    (m => m.id === newSuggestion.movie)
+    (modifyAt
+      ('suggestions')
+      (appendTo(newSuggestion))
+    )
+
 class App extends React.Component {
 
   state = {
@@ -312,29 +320,21 @@ class App extends React.Component {
             (newDBComic)
             ([...this.state.movies])
 
-            this.setState({movies})
+        this.setState({ movies })
       })
 
   }
 
   addNewSuggestion = ({ title, future_release, related_movie, plot }) => {
-    let movie = this.state.currentMovie
-    saveSuggestionToServer({ title, future_release, related_movie, plot, movie })
+    saveSuggestionToServer({ title, future_release, related_movie, plot, movie: this.state.currentMovie })
       .then(newDBSuggestion => {
-        console.log(newDBSuggestion)
+        let movies =
+          appendSuggestionToMovies
+            (newDBSuggestion)
+            ([...this.state.movies])
 
+        this.setState({ movies })
       })
-
-    // const newSuggestion = {
-    //   title,
-    //   id: this.getNextComicId()
-    // }
-
-    let movies = { ...this.state.movies }
-
-    // movies[this.state.currentMovie - 1].suggestions.push(newSuggestion)
-
-    this.setState({ movies })
   }
 
   render = () => {
