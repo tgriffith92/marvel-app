@@ -296,7 +296,6 @@ class App extends React.Component {
   getAllMovies = () =>
     Object.values(this.state.movies)
 
-
   getMovie = () =>
     this.state.movies[this.state.currentMovie - 1]
 
@@ -336,7 +335,6 @@ class App extends React.Component {
 
         this.setState({ movies })
       })
-
   }
 
   addNewSuggestion = ({ title, future_release, related_movie, plot }) => {

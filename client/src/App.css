@@ -29,6 +29,11 @@ a {
   color: red;
 }
 
+select {
+  background-color: black;
+  color: white;
+}
+
 .single {
   margin-left: 675px;
 }
@@ -39,4 +44,5 @@ a {
   display: flex;
   justify-content: space-around;
   margin-bottom: 50px;
+  border-style: inset;
 }
