@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import SingleComic from './SingleComic'
-import { Button } from 'react-bulma-components'
-import './App.css';
+import './App.css'
 
 const moviePreview = (movie) => (
   <li>
@@ -108,17 +107,20 @@ class NewSuggestionForm extends React.Component {
   }
 
   render = () => (
-    <form onSubmit={this.handleSubmit}>
-      <label htmlFor='title'>Title:</label><br />
-      <input type='text' name='title' onChange={this.handleInput} placeholder='Dark Reign' /><br />
-      <label htmlFor='future_release'>Year:</label><br />
-      <input type='date' name='future_release' onChange={this.handleInput} /><br />
-      <label htmlFor='related_movie'>Tie-in Movie:</label><br />
-      <input type='text' name='related_movie' onChange={this.handleInput} placeholder='Black Panther 2' /><br />
-      <label htmlFor='plot'>Plot:</label><br />
-      <textarea rows='4' cols='50' name='plot' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
-      <Button type='submit'>Add Movie</Button>
-    </form>
+   
+      <form onSubmit={this.handleSubmit}>
+        <label htmlFor='title'>Title:</label><br />
+        <input type='text' name='title' onChange={this.handleInput} placeholder='Dark Reign' /><br />
+        <label htmlFor='future_release'>Year:</label><br />
+        <input type='date' name='future_release' onChange={this.handleInput} /><br />
+        <label htmlFor='related_movie'>Tie-in Movie:</label><br />
+        <input type='text' name='related_movie' onChange={this.handleInput} placeholder='Black Panther 2' /><br />
+        <label htmlFor='plot'>Plot:</label><br />
+        <textarea rows='4' cols='50' name='plot' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
+        <input color='primary' type='submit' value='Add Movie'/>
+      </form>
+   
+
   )
 }
 
@@ -146,15 +148,18 @@ class NewComicForm extends React.Component {
   }
 
   render = () => (
-    <form onSubmit={this.handleSubmit}>
-      <label htmlFor='title'>Title:</label><br />
-      <input type='text' name='title' onChange={this.handleInput} placeholder='Civil War' /><br />
-      <label htmlFor='rating'>Rating(1-5):</label><br />
-      <input type='number' name='rating' min='1' max='5' onChange={this.handleInput} /><br />
-      <label htmlFor='review'>Review:</label><br />
-      <textarea rows='4' cols='50' name='review' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
-      <Button type='submit'>Add Comic</Button>
-    </form>
+    
+      <form onSubmit={this.handleSubmit}>
+        <label htmlFor='title'>Title:</label><br />
+        <input type='text' name='title' onChange={this.handleInput} placeholder='Civil War' /><br />
+        <label htmlFor='rating'>Rating(1-5):</label><br />
+        <input type='number' name='rating' min='1' max='5' onChange={this.handleInput} /><br />
+        <label htmlFor='review'>Review:</label><br />
+        <textarea rows='4' cols='50' name='review' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
+        <input color='primary' type='submit' value='Add Comic'/>
+      </form>
+  
+
   )
 }
 
@@ -186,18 +191,21 @@ class NewCharacterForm extends React.Component {
   }
 
   render = () => (
-    <form onSubmit={this.handleSubmit}>
-      <label htmlFor='name'>Character Name:</label><br />
-      <input type='text' name='name' onChange={this.handleInput} placeholder='Namor' /><br />
-      <label htmlFor='affiliation'>Affiliation:</label><br />
-      <select value={this.state.affiliation} onChange={this.handleSelect}>
-        <option value='Hero'>Hero</option>
-        <option value='Villain'>Villain</option>
-      </select><br />
-      <label htmlFor='reason'>Reason:</label><br />
-      <textarea rows='4' cols='50' name='reason' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
-      <Button type='submit' color='info' outlined rounded size='large'>Add Character</Button>
-    </form>
+    
+      <form onSubmit={this.handleSubmit}>
+        <label htmlFor='name'>Character Name:</label><br />
+        <input type='text' name='name' onChange={this.handleInput} placeholder='Namor' /><br />
+        <label htmlFor='affiliation'>Affiliation:</label><br />
+        <select value={this.state.affiliation} onChange={this.handleSelect}>
+          <option value='Hero'>Hero</option>
+          <option value='Villain'>Villain</option>
+        </select><br />
+        <label htmlFor='reason'>Reason:</label><br />
+        <textarea rows='4' cols='50' name='reason' onChange={this.handleInput} placeholder='Enter text here...'></textarea><br />
+        <input type='submit' color='primary' />
+      </form>
+  
+
   )
 }
 
@@ -277,11 +285,9 @@ class App extends React.Component {
       })
   }
 
-  getAllMovies = () => {
-    console.log(this.state)
-    return Object.values(this.state.movies)
+  getAllMovies = () =>
+    Object.values(this.state.movies)
 
-  }
 
   getMovie = () =>
     this.state.movies[this.state.currentMovie - 1]
@@ -342,32 +348,33 @@ class App extends React.Component {
       return (<h1>Loading</h1>);
     }
     return (
-      <div className='container'>
-        <aside className='container'>
-          <Router>
-            <Switch>
-              <Route
-                path='/'
-                exact
-                render={() => (
-                  <div>
-                    {titleList(this.getAllMovies(), this.setCurrentMovie)}
-                    {singleComicList(this.getMovie())}
-                  </div>
-                )} />
-              <Route path='/comic/:id' component={SingleComic} />
-            </Switch>
-          </Router>
-        </aside>
-        <main className='container'>
-
-          <NewCharacterForm addNewChar={this.addNewChar} />
-          {singleCharacterList(this.getMovie())}
-          <NewComicForm addNewComic={this.addNewComic} />
-          <NewSuggestionForm addNewSuggestion={this.addNewSuggestion} />
-          {singleMovieList(this.getMovie())}
-        </main>
-      </div>
+      
+        <div className='container'>
+            <aside>
+              <Router>
+                <Switch>
+                  <Route
+                    path='/'
+                    exact
+                    render={() => (                   
+                        <div>
+                          {titleList(this.getAllMovies(), this.setCurrentMovie)}
+                          {singleComicList(this.getMovie())}
+                        </div>
+                    )} />
+                  <Route path='/comic/:id' component={SingleComic} />
+                </Switch>
+              </Router>
+            </aside>
+          
+            <main className='container'>
+              <NewComicForm addNewComic={this.addNewComic} />
+              <NewCharacterForm addNewChar={this.addNewChar} />
+              {singleCharacterList(this.getMovie())}
+              <NewSuggestionForm addNewSuggestion={this.addNewSuggestion} />
+              {singleMovieList(this.getMovie())}
+            </main> 
+        </div>  
     )
   }
 }
