@@ -29,8 +29,11 @@ class SingleCharacter extends Component {
             <div>
                 <Link to='/'>Home</Link>
                 <h1>Character</h1>
+                <h3>Name</h3>
                 <p>{this.state.character.name}</p>
+                <h3>Affiliation</h3>
                 <p>{this.state.character.affiliation}</p>
+                <h3>Reason</h3>
                 <p>{this.state.character.reason}</p>
             </div>
         )

@@ -1,11 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import SingleComic from './SingleComic'
-import './App.css'
+import NavBar from './components/NavBar';
+import SingleComic from './components/SingleComic';
+import SingleCharacter from './components/SingleCharacter';
+import SingleSuggestion from './components/SingleSuggestion';
+import './App.css';
 
-const moviePreview = (movie) => (
+const moviePreview = (suggestion) => (
   <li>
-    {movie.id} - {movie.title}
+    <Link to={`/suggestion/${suggestion.id}`}>
+    {suggestion.id} - {suggestion.title}
+    </Link>
+    
   </li>
 )
 
@@ -17,7 +23,7 @@ const movieList = (movie) => (
 
 const singleMovieList = (movie) => (
   <div>
-    {movie.title}
+    {movie.title} Suggestions
     {movieList(movie.suggestions)}
   </div>
 )
@@ -56,7 +62,7 @@ const singleComicList = (movie) => {
   }
   return (
     <div>
-      {movie.title}
+      {movie.title} Comics
       {comicList(movie.comics)}
     </div>
   )
@@ -64,7 +70,9 @@ const singleComicList = (movie) => {
 
 const characterPreview = (character) => (
   <li>
+    <Link to={`/character/${character.id}`}>
     {character.id} - {character.name}
+    </Link>
   </li>
 )
 
@@ -77,7 +85,7 @@ const characterList = (character) => (
 const singleCharacterList = (movie) => {
   return (
     <div>
-      {movie.title}
+      {movie.title} Characters
       {characterList(movie.characters)}
     </div>
   )
@@ -349,7 +357,8 @@ class App extends React.Component {
     }
     return (
       
-        <div className='container'>
+        <div>
+          <NavBar />
             <aside>
               <Router>
                 <Switch>
@@ -360,9 +369,13 @@ class App extends React.Component {
                         <div>
                           {titleList(this.getAllMovies(), this.setCurrentMovie)}
                           {singleComicList(this.getMovie())}
+                          {singleCharacterList(this.getMovie())}
+                          {singleMovieList(this.getMovie())}
                         </div>
                     )} />
                   <Route path='/comic/:id' component={SingleComic} />
+                  <Route path='/character/:id' component={SingleCharacter} />
+                  <Route path='/suggestion/:id' component={SingleSuggestion} />
                 </Switch>
               </Router>
             </aside>
@@ -370,9 +383,7 @@ class App extends React.Component {
             <main className='container'>
               <NewComicForm addNewComic={this.addNewComic} />
               <NewCharacterForm addNewChar={this.addNewChar} />
-              {singleCharacterList(this.getMovie())}
               <NewSuggestionForm addNewSuggestion={this.addNewSuggestion} />
-              {singleMovieList(this.getMovie())}
             </main> 
         </div>  
     )
