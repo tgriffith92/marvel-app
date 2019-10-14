@@ -45,4 +45,5 @@ select {
   justify-content: space-around;
   margin-bottom: 50px;
   border-style: inset;
+  border-color: black;
 }
