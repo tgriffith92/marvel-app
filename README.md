@@ -17,4 +17,4 @@ The purpose of this app is to provide recommendations for people that watch movi
 ![ERD](https://github.com/tgriffith92/marvel-app/blob/master/client/public/ERD.png)
 
 **Wireframe**
-![Wireframe](https://github.com/tgriffith92/marvel-app/tree/master/client/public/Wireframe)
+![Wireframe](https://github.com/tgriffith92/marvel-app/blob/master/client/public/Wireframe/Home%20.png)
