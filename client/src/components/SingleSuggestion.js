@@ -26,7 +26,7 @@ class SingleSuggestion extends Component {
 
     render = () => {
         return (
-            <div>
+            <div className='single'>
                 <Link to='/'>Home</Link>
                 <h1>Movie Suggestion</h1>
                 <h3>Title</h3>

@@ -21,7 +21,21 @@
   color: #09d3ac;
 }
 
+body {
+  background: linear-gradient(blue, green)
+}
+
+a {
+  color: red;
+}
+
+.single {
+  margin-left: 675px;
+}
+
 .container {
+  width: 100%;
+  height: 100%;
   display: flex;
-  
+  justify-content: space-around
 }

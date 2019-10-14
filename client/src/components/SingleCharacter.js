@@ -26,7 +26,7 @@ class SingleCharacter extends Component {
 
     render = () => {
         return (
-            <div>
+            <div className='single'>
                 <Link to='/'>Home</Link>
                 <h1>Character</h1>
                 <h3>Name</h3>

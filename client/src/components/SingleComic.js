@@ -26,9 +26,8 @@ class SingleComic extends Component {
 
     render = () => {
         return (
-            <div>
+            <div className='single'>
                 <Link to='/'>Home</Link>
-                
                 <h1>Comic</h1>
                 <h3>Title</h3>
                 <p>{this.state.comic.title}</p>
